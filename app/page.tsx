@@ -1,65 +1,143 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { Hero } from "@/components/hero";
+import { Benefits } from "@/components/benefits";
+import { Testimonials } from "@/components/testimonials";
+import { Quiz } from "@/components/quiz";
+import { ContactForm } from "@/components/contact-form";
+import { Success } from "@/components/success";
+
+type Step = "landing" | "quiz" | "form" | "success";
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+  const [currentStep, setCurrentStep] = useState<Step>("landing");
+
+  const handleStartQuiz = () => {
+    setCurrentStep("quiz");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleQuizComplete = () => {
+    setCurrentStep("form");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleFormSubmit = () => {
+    setCurrentStep("success");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (currentStep === "quiz") {
+    return (
+      <main className="min-h-screen flex flex-col">
+        <header className="py-4 px-4 border-b border-border">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <button
+              onClick={() => setCurrentStep("landing")}
+              className="text-muted hover:text-foreground transition-colors flex items-center gap-2"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Voltar
+            </button>
+            <span className="text-lg font-semibold text-foreground">Protocolo Bicarbonato</span>
+            <div className="w-16" />
+          </div>
+        </header>
+        <div className="flex-1 flex items-center justify-center px-4 py-12">
+          <Quiz onComplete={handleQuizComplete} />
         </div>
       </main>
-    </div>
+    );
+  }
+
+  if (currentStep === "form") {
+    return (
+      <main className="min-h-screen flex flex-col">
+        <header className="py-4 px-4 border-b border-border">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <button
+              onClick={() => setCurrentStep("quiz")}
+              className="text-muted hover:text-foreground transition-colors flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Voltar
+            </button>
+            <span className="text-lg font-semibold text-foreground">Protocolo Bicarbonato</span>
+            <div className="w-16" />
+          </div>
+        </header>
+        <div className="flex-1 flex items-center justify-center px-4 py-12">
+          <ContactForm onSubmit={handleFormSubmit} />
+        </div>
+      </main>
+    );
+  }
+
+  if (currentStep === "success") {
+    return (
+      <main className="min-h-screen flex flex-col">
+        <header className="py-4 px-4 border-b border-border">
+          <div className="max-w-6xl mx-auto flex items-center justify-center">
+            <span className="text-lg font-semibold text-foreground">Protocolo Bicarbonato</span>
+          </div>
+        </header>
+        <div className="flex-1 flex items-center justify-center px-4 py-12">
+          <Success />
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen">
+      <header className="fixed top-0 left-0 right-0 z-50 py-4 px-4 bg-background/80 backdrop-blur-lg border-b border-border">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <span className="text-lg font-semibold text-foreground">
+            Dr. Carlos Jaramillo
+          </span>
+          <button
+            onClick={handleStartQuiz}
+            className="px-4 py-2 bg-primary text-background font-medium rounded-lg hover:bg-primary-hover transition-colors text-sm"
+          >
+            Começar Quiz
+          </button>
+        </div>
+      </header>
+
+      <Hero onStartQuiz={handleStartQuiz} />
+      <Benefits />
+      <Testimonials />
+
+      <section className="py-20 px-4 bg-secondary/30">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            Pronto para transformar sua saúde?
+          </h2>
+          <p className="text-lg text-muted mb-8 max-w-2xl mx-auto">
+            Faça o quiz gratuito agora e descubra como o Protocolo Bicarbonato pode te ajudar.
+          </p>
+          <button
+            onClick={handleStartQuiz}
+            className="px-8 py-4 bg-primary text-background font-semibold text-lg rounded-lg hover:bg-primary-hover transition-all duration-200 shadow-lg shadow-primary/25"
+          >
+            Fazer Quiz Gratuito
+          </button>
+        </div>
+      </section>
+
+      <footer className="py-8 px-4 border-t border-border">
+        <div className="max-w-6xl mx-auto text-center text-muted text-sm">
+          <p>&copy; 2024 Dr. Carlos Jaramillo - Protocolo Bicarbonato. Todos os direitos reservados.</p>
+          <p className="mt-2">
+            Este site é apenas para fins informativos e não substitui aconselhamento médico profissional.
+          </p>
+        </div>
+      </footer>
+    </main>
   );
 }
